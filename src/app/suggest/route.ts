@@ -1,23 +1,33 @@
 import postgres from "postgres";
+import * as cheerio from "cheerio";
 
 
-export async function GET(request: Request) { 
-    console.log('hitting GET')
-    try { 
-        console.log('#######')
-        console.log(request)
-        // const fetch_url = new URL('https://steampowered.com/search/suggest')
-        // fetch_url.searchParams.set('term', 'Mech')
-        // fetch_url.searchParams.set('f', 'games')
-        // fetch_url.searchParams.set('cc', 'US')
-        // const results = await fetch(fetch_url.href)
-        // const text = await results.text();
-        // console.log(text)
-        return Response.json({
-            data: {
-                field1: '111',
-                field2:'2222'
-        } })
+
+export async function GET(request: Request) {
+    try {
+        const req_url = new URL(request.url)
+        const search_url = new URL("https://store.steampowered.com/search/suggest?" + req_url.searchParams)
+        
+        const html = await fetch(search_url.href)
+        const text = await html.text();
+        const $ = cheerio.load(text)
+        const results:any[] = [];
+        $('a').each((i, el) => {
+            //Values
+            const id = el.attribs['data-ds-appid']
+            const name = $(el).find('.match_name').text()
+            const imgSrc = $(el).find('img').attr('src')
+            
+            //Conditional Logic
+            const isAnApp = id !==undefined
+            const hasAGameTag=el.attribs['data-ds-tagids']!==undefined;
+            //If it gets here execute.
+            if(isAnApp&&hasAGameTag)results.push({ name, imgSrc, id:Number(id) })
+        });
+
+
+
+        return Response.json({ results })
     } catch (e) {
-     }
+    }
 }
