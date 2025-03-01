@@ -17,11 +17,17 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={roboto.variable}
+        className={roboto.variable + 'flex h-screen bg-red-300'}
       >
-    
-            {children}
-     
+        <div className=" flex bg-orange-300 ">
+          SideNaveefef
+        </div>
+        <div className='flex-1 bg-yellow-300'>
+          {children}
+        </div>
+
+
+
       </body>
     </html>
   );

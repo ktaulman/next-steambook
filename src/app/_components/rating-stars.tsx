@@ -30,9 +30,9 @@ export default function RatingStars(){
         return setSelectedRating(value)
     }
     return(
-        <div className='flex gap-1 w-full'>
+        <div className='flex gap-1 w-full relative '>
             {Array(5).fill('').map((_,i)=>{
-                return <Star handleClick={handleClick} value={i+1} selectedRating={selectedRating}/>
+                return <Star key={`star-${i}`}handleClick={handleClick} value={i+1} selectedRating={selectedRating}/>
             })}
            
         </div>

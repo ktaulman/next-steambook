@@ -15,7 +15,7 @@ export default function SearchBar() {
         setMatches(results)
     }, 400)
     return (
-        <div className='relative '>
+        <div className='relative'>
             Game Search:
             <div className='relative flex flex-1 max-w-[600px]'>
                 <label htmlFor='search' className='sr-only text-sm text-black'>Search</label>
@@ -31,7 +31,7 @@ export default function SearchBar() {
             </div>
             {/* RESULTS */}
             {matches.length > 0 && (
-                <div className='absolute flex flex-col min-h-[130px] gap-5'>
+                <div className='absolute flex flex-col min-h-[130px] gap-5 bg-white'>
 
                     {matches.map(({ id, name, imgSrc }) => {
                         return (
