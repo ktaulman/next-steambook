@@ -20,10 +20,10 @@ export default function SearchBar() {
             <div className='relative flex flex-1 max-w-[600px]'>
                 <label htmlFor='search' className='sr-only text-sm text-black'>Search</label>
                 <input
-                    className='block w-full rounded-md border border-gray-200 py-[9px] pl-10 text-sm outline-2'
+                    className='block w-full rounded-md border border-gray-200 py-[9px] pl-2 text-sm outline-2'
                     placeholder=''
                     onChange={e => handleChange(e.target.value)}
-                    onBlur={()=>setMatches([])}
+                    onBlur={() => setMatches([])}
                     onFocus={e => handleChange(e.target.value)}
                 />
 
@@ -40,10 +40,10 @@ export default function SearchBar() {
 
                                     <img src={imgSrc} className=' h-24' />
                                     <p className=' '>
-                                        {name}    
+                                        {name}
                                     </p>
                                 </div>
-  
+
                             </div>
                         )
                     })}

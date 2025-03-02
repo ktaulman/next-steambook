@@ -1,5 +1,8 @@
+
 import { Roboto } from 'next/font/google';
 import "./globals.css";
+import SideNav from './_components/side-nav';
+
 
 const roboto = Roboto({
   weight: ['300', '400', '500', '700'],
@@ -17,15 +20,19 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={roboto.variable + 'flex h-screen bg-red-300'}
+        className={roboto.variable+""}
       >
-        <div className=" flex bg-orange-300 ">
-          SideNaveefef
-        </div>
-        <div className='flex-1 bg-yellow-300'>
-          {children}
-        </div>
+        <main className='flex h-screen'>
 
+          <div className="w-60   ">
+            <SideNav />
+
+          </div>
+          <div className=' flex-1 '>
+            {children}
+          </div>
+
+        </main>
 
 
       </body>
