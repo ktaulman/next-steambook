@@ -16,8 +16,8 @@ export default function SearchBar() {
     }, 400)
     return (
         <div className='relative'>
-            Game Search:
-            <div className='relative flex flex-1 max-w-[600px]'>
+
+            <div className='relative flex flex-1 max-w-[400px]'>
                 <label htmlFor='search' className='sr-only text-sm text-black'>Search</label>
                 <input
                     className='block w-full rounded-md border border-gray-200 py-[9px] pl-2 text-sm outline-2'
@@ -31,11 +31,11 @@ export default function SearchBar() {
             </div>
             {/* RESULTS */}
             {matches.length > 0 && (
-                <div className='absolute flex flex-col min-h-[130px] gap-5 bg-white'>
+                <div className='absolute flex flex-col min-h-[130px] gap-5 bg-white z-30'>
 
                     {matches.map(({ id, name, imgSrc }) => {
                         return (
-                            <div className='flex  hover:cursor-pointer hover:opacity-90 hover:font-semibold'>
+                            <div className='flex  hover:cursor-pointer hover:opacity-90 hover:font-semibold border-black border-4 p-4'>
                                 <div>
 
                                     <img src={imgSrc} className=' h-24' />
