@@ -6,6 +6,7 @@ import { useState } from 'react';
 export default function SearchBar() {
     const path = usePathname();
     const [matches, setMatches] = useState([])
+    const [selected, setSelected] = useState(null);
 
     const handleChange = useDebouncedCallback(async (term: string) => {
         if (term.length === 0) return setMatches([])
@@ -14,18 +15,27 @@ export default function SearchBar() {
         const { results } = await data.json();
         setMatches(results)
     }, 400)
+
+    const handleBoxClick = () => {
+        if (selected !== null) setSelected(null);
+    }
+
     return (
         <div className='relative'>
 
-            <div className='relative flex flex-1 max-w-[400px]'>
+            <div className='relative flex flex-1 max-w-[400px]' onClick={() =>}>
                 <label htmlFor='search' className='sr-only text-sm text-black'>Search</label>
-                <input
-                    className='block w-full rounded-md border border-gray-200 py-[9px] pl-2 text-sm outline-2'
-                    placeholder=''
-                    onChange={e => handleChange(e.target.value)}
-                    onBlur={() => setMatches([])}
-                    onFocus={e => handleChange(e.target.value)}
-                />
+                {!selected ? (
+                    <input
+                        className='block w-full rounded-md border border-gray-200 py-[9px] pl-2 text-sm outline-2 h-24'
+                        placeholder=''
+                        onChange={e => handleChange(e.target.value)}
+                        onBlur={() => setMatches([])}
+                        onFocus={e => handleChange(e.target.value)}
+                    />
+                ) : (
+                    <div></div>
+                )}
 
 
             </div>
