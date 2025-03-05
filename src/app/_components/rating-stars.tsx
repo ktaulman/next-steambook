@@ -13,7 +13,7 @@ interface StarProps {
 
 function Star({ value, handleClick, selectedRating }: StarProps) {
     return (
-        <label className=' w-12 h-12'>
+        <label className=' w-12 h-12 cursor-pointer'>
             <input type='radio' onClick={() => handleClick(value)} value={value} name='star' className=' absolute opacity-0 cursor-none ' />
             {selectedRating === value ? (<StarIconSolid className='text-amber-300' />) : (<StarIconOutlined className='text-amber-300' />)}
         </label>
@@ -28,6 +28,7 @@ export default function RatingStars() {
     function handleClick(value: number) {
         return setSelectedRating(value)
     }
+
     return (
         <div className='flex gap-1 w-full relative '>
             {Array(5).fill('').map((_, i) => {

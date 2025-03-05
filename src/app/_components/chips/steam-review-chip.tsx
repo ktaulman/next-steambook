@@ -14,7 +14,7 @@ export default function SteamReviewChip({ scorePercentage, totalReviews }: Steam
                 width={20} height={20} alt='steam small logo'
             />
             <p className="text-xs pl-1 justify-self-end">
-                {scorePercentage}, {totalReviews.toLocaleString()} Reviews
+                {scorePercentage}, {totalReviews?.toLocaleString() || ''} Reviews
             </p>
 
         </div>
