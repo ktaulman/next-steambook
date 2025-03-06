@@ -2,7 +2,7 @@
 // import { Roboto } from 'next/font/google';
 import { Duru_Sans } from "next/font/google";
 import "./globals.css";
-import SideNav from './_components/side-nav';
+import SideNav from './_components/navigation/side-nav';
 
 
 const duru_sans = Duru_Sans({
