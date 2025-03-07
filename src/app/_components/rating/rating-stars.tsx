@@ -2,7 +2,7 @@
 import { StarIcon as StarIconOutlined } from "@heroicons/react/24/outline"
 import { StarIcon as StarIconSolid } from "@heroicons/react/24/solid"
 import { motion } from 'motion/react'
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 interface StarProps {
     value: number;
@@ -40,7 +40,6 @@ export default function RatingStars() {
     function handleClick(value: number) {
         return setSelectedRating(value)
     }
-
     return (
         <div className='flex gap-1 w-full relative '>
             {Array(5).fill('').map((_, i) => {
