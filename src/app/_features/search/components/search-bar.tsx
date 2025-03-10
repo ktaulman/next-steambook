@@ -8,25 +8,27 @@ import { XCircleIcon } from '@heroicons/react/24/outline';
 import { SearchResult, SearchResultCardProps } from '../interfaces/search-interfaces'
 import { SearchContext } from '../context/search-provider';
 
-function SearchResultCard({ id, name, scorePercentage, totalReviews, imgSrc, disableHover }: SearchResultCardProps) {
-
+function SearchResultCard({ id, name, scorePercentage, totalReviews, imgSrc, disableHover, developer, publisher, tags }: SearchResultCardProps) {
+    console.log({ developer, publisher, tags })
     return (
-        <div key={id} className={`flex w-full justify-between ${!disableHover ? 'hover:cursor-pointer' : ''} hover:opacity-90 ${!disableHover ? 'hover:font-semibold' : ''}  p-4 max-w-[600px] bg-white `}>
-            <div className='flex flex-col gap-5'>
-                <h2 className='font-semibold text-base'>
+        <div key={id} className={`grid grid-cols-2 grid-rows-10 w-full  ${!disableHover ? 'hover:cursor-pointer' : ''} hover:opacity-90 ${!disableHover ? 'hover:font-semibold' : ''}  p-4 max-w-[800px] bg-white `}>
+            <div className='flex flex-col  col-span-1 row-span-9'>
+                <h2 className='font-bold text-2xl'>
                     {name}
                 </h2>
                 <SteamReviewChip
                     scorePercentage={`${scorePercentage}%`}
                     totalReviews={totalReviews}
                 />
-                {/* <SteambookReviewChip
-                    scoreStars="4.5"
-                    totalReviews={100}
-                /> */}
+                <h3>Developer:{developer}</h3>
+                <h3>Publisher:{publisher}</h3>
             </div>
-            <img src={imgSrc} className=' h-24' />
-
+            <div className="col-span-1 row-span-9">
+                <img src={imgSrc} className=' h-24' />
+            </div>
+            <div className="col-span-2 row-span-1 flex gap-4">
+                {tags?.map(text => (<div>{text}</div>))}
+            </div>
         </div>)
 }
 
@@ -78,6 +80,9 @@ export default function SearchBarWithContext() {
                         imgSrc={selected.selected.imgSrc}
                         scorePercentage={selected.selected.scorePercentage}
                         totalReviews={selected.selected.totalReviews}
+                        developer={selected.selected.developer}
+                        publisher={selected.selected.publisher}
+                        tags={selected.selected.tags}
                         disableHover={true}
                     />
                     <button className='text-red-800 w-8 h-8 cursor-pointer hover:text-red-500' onClick={() => selected.setSelected(null)}> <XCircleIcon /> {''}</button>
@@ -90,16 +95,20 @@ export default function SearchBarWithContext() {
             {results.results.length > 0 && (
                 <div className=' absolute flex flex-col  min-h-[130px]  gap-0  z-30  w-full px-6'>
 
-                    {results.results.map(({ id, name, imgSrc, scorePercentage, totalReviews }, i) => {
+                    {results.results.map(({ id, name, imgSrc, scorePercentage, totalReviews, developer, publisher, tags }, i) => {
 
                         return (
                             <div key={id + 'div_wrapper bg-white '} onClick={() => handleSearchResultCardClick(i)}>
-                                <SearchResultCard 
-                                id={id} 
+                                <SearchResultCard
+                                    id={id}
                                     name={name}
-                                    imgSrc={imgSrc} 
-                                scorePercentage={scorePercentage} 
-                                totalReviews={totalReviews} />
+                                    imgSrc={imgSrc}
+                                    scorePercentage={scorePercentage}
+                                    totalReviews={totalReviews}
+                                    developer={developer}
+                                    publisher={publisher}
+                                    tags={tags}
+                                />
                             </div>
                         )
                     })}

@@ -52,7 +52,10 @@ async function getAllReviewData(suggestions: any[]) {
             const $ = cheerio.load(app_text)
             const scorePercentage = $("div[itemprop='aggregateRating']").attr('data-tooltip-html')?.split('%')[0].trim();
             const totalReviews = Number($("meta[itemprop=reviewCount]").attr('content'));
-            return resolve({ id, scorePercentage, totalReviews })
+            //release data
+            const date = $('.release_date').find('date');
+            const releaseDate = $(date).text();
+            return resolve({ id, scorePercentage, totalReviews, releaseDate })
         }
         catch (e) {
             return reject(e)

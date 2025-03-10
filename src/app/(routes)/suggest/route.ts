@@ -44,9 +44,31 @@ async function getAllReviewData(suggestions: any[]) {
             })
             const app_text = await app_html.text();
             const $ = cheerio.load(app_text)
+            //Selectors and Text Content
             const scorePercentage = $("div[itemprop='aggregateRating']").attr('data-tooltip-html')?.split('%')[0].trim();
             const totalReviews = Number($("meta[itemprop=reviewCount]").attr('content'));
-            return resolve({ id, scorePercentage, totalReviews })
+            const developerRow = $(".dev_row").get(1)
+            const publisherRow = $(".dev_row").get(2)
+            const developer = $(developerRow).find('a').text()
+            const publisher = $(publisherRow).find('a').text()
+
+            //Tags
+            //-Tags Helper 
+            function getTags() {
+                const results: string[] = [];
+                $(`a.app_tag`).slice(0, 3).each((i, el) => {
+                    const tag = $(el).text().replace(/[\t\n]+/g, '');
+                    results.push(tag)
+                })
+                return results;
+            }
+            const tags = getTags();
+            //get releaseDate
+            const date = $('.release_date').find('.date');
+            const releaseDate = $(date).text();
+    
+            //resolve
+            return resolve({ id, scorePercentage, totalReviews, developer, publisher, tags, releaseDate })
         }
         catch (e) {
             return reject(e)

@@ -4,6 +4,10 @@ export interface SearchResult {
     scorePercentage: number;
     totalReviews: number;
     imgSrc: string;
+    developer?: string;
+    publisher?: string;
+    tags?: string[];
+    releaseDate?: string;
 }
 
 export interface SearchResultCardProps extends SearchResult {
