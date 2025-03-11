@@ -20,13 +20,12 @@ export default function RootLayout({
       <body
         className={duru_sans.className + ""}
       >
-        <main className='flex h-screen'>
+        <main className='flex h-screen dark '>
 
-          <div className="w-60   ">
+          <div className="w-60 dark:bg-black ">
             <SideNav />
-
           </div>
-          <div className=' flex-1 '>
+          <div className=' dark:bg-black border-3 border-dashed flex-1'>
             {children}
           </div>
 

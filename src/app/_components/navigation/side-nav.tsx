@@ -20,10 +20,10 @@ export default function SideNav() {
             {/* Links */}
             <nav>
 
-                <Link href='/create' className='flex hover:font-bold flexx gap-4'><PlusCircleIcon className='size-8' />Post Review</Link>
-                <Link href='/reviews' className='flex hover:font-bold flexx gap-4' > <ListBulletIcon className="size-8" />My Reviews</Link>
-                <Link href='/community' className='flex hover:font-bold flexx gap-4' ><ArrowTrendingUpIcon className='size-8' />Community</Link>
-                <Link href='profile' className='flex hover:font-bold flexx gap-4'><UserCircleIcon className='size-8' />  Profile</Link>
+                <Link href='/create' className='flex hover:font-bold flex dark:text-white gap-4'><PlusCircleIcon className='size-8' />Post Review</Link>
+                <Link href='/reviews' className='flex hover:font-bold flex dark:text-white gap-4' > <ListBulletIcon className="size-8" />My Reviews</Link>
+                <Link href='/community' className='flex hover:font-bold flex dark:text-white gap-4' ><ArrowTrendingUpIcon className='size-8' />Community</Link>
+                <Link href='profile' className='flex hover:font-bold flex dark:text-white gap-4'><UserCircleIcon className='size-8' />  Profile</Link>
             </nav>
         </div>)
 
