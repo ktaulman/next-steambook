@@ -13,7 +13,7 @@ interface StarProps {
 
 function Star({ value, handleClick, selectedRating }: StarProps) {
     return (
-        <label className=' w-12 h-12 cursor-pointer'>
+        <label className=' w-12 h-12 cursor-pointer dark:text-white'>
             <input type='radio' onClick={() => handleClick(value)} value={value} name='review_starRating' className=' absolute opacity-0 cursor-none ' />
             {selectedRating === value ? (
                 <motion.div
