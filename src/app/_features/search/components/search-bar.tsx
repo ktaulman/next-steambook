@@ -60,7 +60,7 @@ export default function SearchBarWithContext() {
 
             {selected.selected === null ? (
                 <input
-                    className='block w-full  pl-3 outline-none h-24 text-xl focus:font-bold border-b-2 border-b-black'
+                    className='block w-full  pl-3 outline-none h-24 text-xl focus:font-bold border-b-2 border-b-white dark:text-white'
                     placeholder='Search Game Here'
                     onChange={e => handleChange(e.target.value)}
                     onFocus={e => handleChange(e.target.value)}
