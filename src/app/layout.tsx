@@ -22,7 +22,7 @@ export default function RootLayout({
       >
         <main className='flex h-screen dark '>
 
-          <div className="w-60 dark:bg-black ">
+          <div className="w-60 dark:bg-black">
             <SideNav />
           </div>
           <div className=' dark:bg-black border-3 border-dashed flex-1'>
