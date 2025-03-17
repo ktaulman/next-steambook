@@ -1,4 +1,9 @@
 import * as cheerio from "cheerio";
+import postgres from 'postgres';
+
+
+const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
+
 
 async function getTopUpcomingGames() {
     const url = new URL('https://store.steampowered.com/search/results')
@@ -30,5 +35,10 @@ async function getTopUpcomingGames() {
         }
     })
 
-    return scraped_results.sort((a, b) => (new Date(a.releaseDate).getTime() - new Date(b.releaseDate).getTime())).slice(0, 24);
+    scraped_results.sort((a, b) => (new Date(a.releaseDate).getTime() - new Date(b.releaseDate).getTime())).slice(0, 30);
+
+    const data = await sql<any[]> `
+        INSERT INTO steam_top_games ()
+    `
+
 }
