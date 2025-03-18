@@ -63,7 +63,7 @@ export async function GET() {
         WHERE "time" >= ${timeAtThirtyMinutesAgo}
         ORDER BY "time" 
         LIMIT 20
-    `
+        `
         return Response.json({ results }, { status: 200 })
     } catch (e) {
         console.log(e)
