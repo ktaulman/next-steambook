@@ -1,7 +1,6 @@
 'use server';
 
 import * as cheerio from "cheerio";
-import { timeStamp } from "console";
 import { sql } from '@/app/_db/db'
 
 
@@ -84,7 +83,7 @@ async function checkLastWrittenRecord() {
                 SELECT *
                 FROM steambook.top_new_apps
                 WHERE "time" >= ${timeAtThirtyMinutesAgo}
-                ORDER BY "time" 
+                ORDER BY "time" DESC 
                 LIMIT 1
             `
             resolve(results)
