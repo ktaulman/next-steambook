@@ -1,6 +1,9 @@
+'use server';
+
 import * as cheerio from "cheerio";
+import { timeStamp } from "console";
 import postgres from 'postgres';
-const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
+
 
 // GET Function - Steambook Route Used To Populate 
 async function fetchGameDataByPage({ start, count }: { start: number, count: number }) {
@@ -49,20 +52,23 @@ async function getTopNewGames() {
             })
         }
     })
-    return top_new_games.slice(0, 10);
+    return top_new_games.slice(0, 20);
 }
 
 export async function GET() {
     try {
-        const results = await getTopNewGames(); //get the scraped results that're formatted.
+        const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
+        const results = await sql`
+        SELECT table_name FROM information_schema.tables WHERE table_schema = 'steambook'
+        ` //get the scraped results that're formatted.
         //ping the GET route for /check-top-new 
         //should be a program to see if any records are timestamped for the last half hour 
         // if records have be 
         //if the last records are older than 30 minutes then you should INSERT new records into the data base 
         console.log({ results })
-        return Response.json({ results })
+        return Response.json({ results }, { status: 200 })
     } catch (e) {
-        return Response.json({ results: [] })
+        return Response.json({ results: [] }, { status: 400 })
     }
 }
 
@@ -71,14 +77,38 @@ export async function GET() {
 
 export async function POST() {
     try {
-        const results = await getTopNewGames(); //get the scraped results that're formatted.
         //ping the GET route for /check-top-new 
         //should be a program to see if any records are timestamped for the last half hour 
         // if records have be 
         //if the last records are older than 30 minutes then you should INSERT new records into the data base 
-        console.log({ results })
-        return Response.json({ results })
+
+        const results = await getTopNewGames(); //get the scraped results that're formatted.
+        const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
+
+        const res = await sql`INSERT INTO steambook.top_new_apps (app_id, title, store_href, "store_imgSrc", release_date, score, number_reviews, "time") 
+VALUES (12345, 'Example Game', 'https://store.steampowered.com/app/12345', 'https://cdn.cloudflare.steamstatic.com/steam/apps/12345/header.jpg', '2023-05-15', 85, 1000, CURRENT_TIMESTAMP)
+            RETURNING *`
+        //         results.slice(0, 1).forEach(async (result, i) => {
+        //             const { releaseDate, title, appId, href, imgSrc, score, numberReviews } = result;
+        //             console.log({ ...result })
+        //             await sql`INSERT INTO steambook.top_new_apps (app_id, title, store_href, "store_imgSrc", release_date, score, number_reviews, "time") 
+        // VALUES (12345, 'Example Game', 'https://store.steampowered.com/app/12345', 'https://cdn.cloudflare.steamstatic.com/steam/apps/12345/header.jpg', '2023-05-15', 85, 1000, CURRENT_TIMESTAMP)
+        //                 `
+        //         })
+
+        // results.slice(0, 2).forEach(async (result, i) => {
+        //     const { releaseDate, title, appId, href, imgSrc, score, numberReviews } = result;
+        //     console.log({ ...result })
+        //     await sql`INSERT INTO steambook.top_new_apps (app_id, title, store_href, "store_imgSrc", release_date, score, number_reviews, "time")
+        //     VALUES ( ${appId}, ${title}, ${href}, ${imgSrc}, ${releaseDate}, ${score}, ${numberReviews}, CURRENT_TIMESTAMP)
+        //     RETURNING *
+        //     `
+        // })
+        console.log(res)
+        return Response.json('SUCCESS', { status: 200, statusText: 'db write successful' })
     } catch (e) {
-        return Response.json({ results: [] })
+        console.log(e)
+
+        return Response.json('FAILURE', { status: 500, statusText: '' })
     }
 }
