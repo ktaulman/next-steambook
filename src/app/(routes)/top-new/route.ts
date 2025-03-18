@@ -2,7 +2,7 @@
 
 import * as cheerio from "cheerio";
 import { timeStamp } from "console";
-import postgres from 'postgres';
+import { sql } from '@/app/_db/db'
 
 
 // GET Function - Steambook Route Used To Populate 
@@ -57,58 +57,69 @@ async function getTopNewGames() {
 
 export async function GET() {
     try {
-        const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
+        const timeAtThirtyMinutesAgo = new Date(Date.now() - (30 * 60 * 1000))
         const results = await sql`
-        SELECT table_name FROM information_schema.tables WHERE table_schema = 'steambook'
-        ` //get the scraped results that're formatted.
-        //ping the GET route for /check-top-new 
-        //should be a program to see if any records are timestamped for the last half hour 
-        // if records have be 
-        //if the last records are older than 30 minutes then you should INSERT new records into the data base 
-        console.log({ results })
+        SELECT *
+        FROM steambook.top_new_apps
+        WHERE "time" >= ${timeAtThirtyMinutesAgo}
+        ORDER BY "time" 
+        LIMIT 20
+    `
         return Response.json({ results }, { status: 200 })
     } catch (e) {
+        console.log(e)
         return Response.json({ results: [] }, { status: 400 })
     }
 }
 
-// POST Request used for Google Cloud Platform CRON Job 
+// POST Request used for Google Cloud Platform CRON Job
+
+
+///Check the most last written records time stamp. 
+async function checkLastWrittenRecord() {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const timeAtThirtyMinutesAgo = new Date(Date.now() - (30 * 60 * 1000))
+            const results = await sql`
+                SELECT *
+                FROM steambook.top_new_apps
+                WHERE "time" >= ${timeAtThirtyMinutesAgo}
+                ORDER BY "time" 
+                LIMIT 1
+            `
+            resolve(results)
+        }
+        catch (e) {
+            reject(e)
+        }
+    })
+
+}
 
 
 export async function POST() {
     try {
-        //ping the GET route for /check-top-new 
-        //should be a program to see if any records are timestamped for the last half hour 
-        // if records have be 
-        //if the last records are older than 30 minutes then you should INSERT new records into the data base 
+        //ping the GET route for /check-top-new
+        //should be a program to see if any records are timestamped for the last half hour
+        //if the last records are older than 30 minutes then you should hit the GET ENDPOINT to getTopNewGames() INSERT new records into the data base 
+        const recentRecord = await checkLastWrittenRecord();
 
-        const results = await getTopNewGames(); //get the scraped results that're formatted.
-        const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
-
-        const res = await sql`INSERT INTO steambook.top_new_apps (app_id, title, store_href, "store_imgSrc", release_date, score, number_reviews, "time") 
-VALUES (12345, 'Example Game', 'https://store.steampowered.com/app/12345', 'https://cdn.cloudflare.steamstatic.com/steam/apps/12345/header.jpg', '2023-05-15', 85, 1000, CURRENT_TIMESTAMP)
-            RETURNING *`
-        //         results.slice(0, 1).forEach(async (result, i) => {
-        //             const { releaseDate, title, appId, href, imgSrc, score, numberReviews } = result;
-        //             console.log({ ...result })
-        //             await sql`INSERT INTO steambook.top_new_apps (app_id, title, store_href, "store_imgSrc", release_date, score, number_reviews, "time") 
-        // VALUES (12345, 'Example Game', 'https://store.steampowered.com/app/12345', 'https://cdn.cloudflare.steamstatic.com/steam/apps/12345/header.jpg', '2023-05-15', 85, 1000, CURRENT_TIMESTAMP)
-        //                 `
-        //         })
-
-        // results.slice(0, 2).forEach(async (result, i) => {
-        //     const { releaseDate, title, appId, href, imgSrc, score, numberReviews } = result;
-        //     console.log({ ...result })
-        //     await sql`INSERT INTO steambook.top_new_apps (app_id, title, store_href, "store_imgSrc", release_date, score, number_reviews, "time")
-        //     VALUES ( ${appId}, ${title}, ${href}, ${imgSrc}, ${releaseDate}, ${score}, ${numberReviews}, CURRENT_TIMESTAMP)
-        //     RETURNING *
-        //     `
-        // })
-        console.log(res)
-        return Response.json('SUCCESS', { status: 200, statusText: 'db write successful' })
+        if (recentRecord.length === 0) {
+            const results = await getTopNewGames(); //get the scraped results that're formatted
+            sql`BEGIN`
+            results.slice(0, 20).forEach(async (result, i) => {
+                const { releaseDate, title, appId, href, imgSrc, score, numberReviews } = result;
+                await sql`INSERT INTO steambook.top_new_apps (app_id, title, store_href, "store_imgSrc", release_date, score, number_reviews, "time")
+                VALUES ( ${appId}, ${title}, ${href}, ${imgSrc}, ${releaseDate}, ${score}, ${numberReviews}, CURRENT_TIMESTAMP)
+                `
+            })
+            sql`COMMIT`
+            return Response.json('SUCCESS', { status: 200, statusText: 'db write successful' })
+        }
+        return Response.json('PROCESSED ALREADY', { status: 409, statusText: 'CRON JOB ran previous records found within past 30 min' })
     } catch (e) {
         console.log(e)
-
+        sql`ROLLBACK`
         return Response.json('FAILURE', { status: 500, statusText: '' })
     }
 }
