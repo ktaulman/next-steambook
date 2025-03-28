@@ -7,18 +7,18 @@ export default function TrendingNewChart() {
         <Chart>
             <Chart.Title>Chart</Chart.Title>
             <Chart.Grid>
-                <Chart.GridHead>
-                    <Chart.GridHeader>
-                        1
-                    </Chart.GridHeader>
-                    <Chart.GridHeader>
-                        2
-                    </Chart.GridHeader>
-                    <Chart.GridHeader>
-                        3
-                    </Chart.GridHeader>
-                </Chart.GridHead>
                 <Chart.GridBody>
+                    <Chart.GridRow>
+                        <Chart.GridHeader>
+                            1
+                        </Chart.GridHeader>
+                        <Chart.GridHeader>
+                            2
+                        </Chart.GridHeader>
+                        <Chart.GridHeader>
+                            3
+                        </Chart.GridHeader>
+                    </Chart.GridRow>
 
                     {
                         Array(5).fill(null)
