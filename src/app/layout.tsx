@@ -25,13 +25,11 @@ export default function RootLayout({
           <div className="w-60 dark:bg-black ">
             <SideNav />
           </div>
-          <div className=' dark:bg-black border-3 border-dashed flex-1'>
+          <div className=' dark:bg-black dark:text-white flex-1'>
             {children}
           </div>
 
         </main>
-
-
       </body>
     </html>
   );

@@ -11,7 +11,7 @@ import { SearchContext } from '../context/search-provider';
 function SearchResultCard({ id, name, scorePercentage, totalReviews, imgSrc, disableHover, developer, publisher, tags }: SearchResultCardProps) {
     console.log({ developer, publisher, tags })
     return (
-        <div key={id} className={`grid grid-cols-2 grid-rows-10 w-full  ${!disableHover ? 'hover:cursor-pointer' : ''} hover:opacity-90 ${!disableHover ? 'hover:font-semibold' : ''}  p-4 max-w-[800px] bg-white `}>
+        <div key={id} className={`grid grid-cols-2 grid-rows-10 w-full  ${!disableHover ? 'hover:cursor-pointer' : ''} hover:opacity-90 ${!disableHover ? 'hover:font-semibold' : ''}  p-4 max-w-[800px] bg-white dark:bg-black  `}>
             <div className='flex flex-col  col-span-1 row-span-9'>
                 <h2 className='font-bold text-2xl'>
                     {name}
@@ -60,7 +60,7 @@ export default function SearchBarWithContext() {
 
             {selected.selected === null ? (
                 <input
-                    className='block w-full  pl-3 outline-none h-24 text-xl focus:font-bold border-b-2 border-b-black'
+                    className='block w-full  pl-3 outline-none h-24 text-xl focus:font-bold border-b-2 border-b-white dark:text-white'
                     placeholder='Search Game Here'
                     onChange={e => handleChange(e.target.value)}
                     onFocus={e => handleChange(e.target.value)}
