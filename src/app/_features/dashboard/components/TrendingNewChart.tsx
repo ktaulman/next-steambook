@@ -22,12 +22,18 @@ async function getTopNewGames() {
     }
 }
 
+function getScore(score: number): { highScore: boolean, mediumScore: boolean, lowScore: boolean } {
+    const result = { highScore: false, mediumScore: false, lowScore: false }
+    if (score >= 90) result.highScore = true;
+    else if (score <= 79 && score >= 65) result.mediumScore = true;
+    else result.lowScore = true;
+    return result
+}
+
 export default async function TrendingNewChart() {
     const newGames = await getTopNewGames();
     if (!newGames || newGames.length === 0) return <h2>No Results Found</h2> //If there's no results to
-    //config 
-    //headers 
-    //
+
     return (
         <Chart>
             <Chart.Title>Top New Games</Chart.Title>
@@ -47,14 +53,18 @@ export default async function TrendingNewChart() {
                         newGames
                             .map(({ title, store_href, release_date, score, number_reviews }, i) => {
                                 //make date transform here
-                                const readable_date = new Date(release_date).toLocaleDateString()
+                                const readableDate = new Date(release_date).toLocaleDateString()
+
+                                const { highScore, mediumScore, lowScore } = getScore(score);
+
                                 return (
                                     <Chart.GridRow hoverable key={'new_row' + i}>
                                         <Chart.GridCell key={'cell_title' + i}><a href={store_href} target="_blank">{title}</a></Chart.GridCell>
-                                        <Chart.GridCell key={'cell_date' + i}>{readable_date}</Chart.GridCell>
+                                        <Chart.GridCell key={'cell_date' + i}>{readableDate}</Chart.GridCell>
                                         <Chart.GridCell key={'cell_score' + i}>
-                                            {score > 70 && <HandThumbUpIcon color='green' className='h-6 w-6' />}
-                                            {score < 70 && <HandThumbDownIcon color='red' className='h-6 w-6' />}
+                                            {highScore && <HandThumbUpIcon color='green' className='h-6 w-6' />}
+                                            {mediumScore && <HandThumbUpIcon color='orange' className='h-6 w-6' />}
+                                            {lowScore && <HandThumbDownIcon color='red' className='h-6 w-6' />}
                                             {score}
                                         </Chart.GridCell>
                                         <Chart.GridCell key={'cell_reviews' + i}>{number_reviews}<DocumentChartBarIcon className='h-6 w-6' /></Chart.GridCell>
