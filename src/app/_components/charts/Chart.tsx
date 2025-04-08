@@ -32,7 +32,7 @@ function GridCell({ children }: PropsWithChildren) {
 //Root Component
 function Chart({ children }: PropsWithChildren) {
     return (
-        <div className="dark:text-white">
+        <div className="dark:text-white text-xs flex flex-col">
             {children}
         </div>
     )

@@ -1,17 +1,19 @@
 import Chart from '@/app/_components/charts/Chart'
 import { sql } from '@/app/_db/db'
+import Link from 'next/link';
 
 
 async function getTopNewGames() {
     try {
         const timeAtThirtyMinutesAgo = new Date(Date.now() - (30 * 60 * 1000))
         const results = await sql`
-            SELECT *
+            SELECT title, store_href, release_date, score, number_reviews
             FROM steambook.top_new_apps
             WHERE "time" >= ${timeAtThirtyMinutesAgo}
             ORDER BY "time" 
             LIMIT 20
             `
+        // SELECT title, store_href, store_imgSrc,release_date, score, number_reviews
         return results;
     } catch (e) {
         console.log(e) //TODO: implement error logging 
@@ -22,36 +24,28 @@ async function getTopNewGames() {
 export default async function TrendingNewChart() {
     const newGames = await getTopNewGames();
     if (!newGames || newGames.length === 0) return <h2>No Results Found</h2> //If there's no results to
-
-    const headers = Object.keys(newGames[0])
-
-
     return (
         <Chart>
-            <Chart.Title>Chart</Chart.Title>
+            <Chart.Title>Top New</Chart.Title>
             <Chart.Grid>
                 <Chart.GridBody>
+                    {/* Header Row */}
                     <Chart.GridRow>
-                        {
-                            headers.map(el => (<Chart.GridHeader>
-                                {el}
-                            </Chart.GridHeader>))
-                        }
-
+                        <Chart.GridHeader>Title</Chart.GridHeader>
+                        <Chart.GridHeader>Release Date</Chart.GridHeader>
+                        <Chart.GridHeader>Score</Chart.GridHeader>
+                        <Chart.GridHeader>Reviews</Chart.GridHeader>
                     </Chart.GridRow>
-
+                    {/* Content Rows */}
                     {
                         newGames
-                            .map((el, i) => (<Chart.GridRow>
-                                {
-                                    Object.values(el).map((cellValue, index) => {
-                                        console.log({ cellValue })
-                                        return (
-                                            <Chart.GridCell key={cellValue + '_Grid_Cell'}> {JSON.stringify(cellValue)}</Chart.GridCell>
-                                        )
-                                    })
-                                }
-                            </Chart.GridRow>
+                            .map(({ title, store_href, release_date, score, number_reviews }) => (
+                                <Chart.GridRow>
+                                    <Chart.GridCell><a href={store_href}>{title}</a></Chart.GridCell>
+                                    <Chart.GridCell>{release_date}</Chart.GridCell>
+                                    <Chart.GridCell>{score}</Chart.GridCell> {/**/}
+                                    <Chart.GridCell>{number_reviews}</Chart.GridCell> {/**/}
+                                </Chart.GridRow>
                             )
                             )
                     }
