@@ -29,6 +29,7 @@ async function getTopNewGames() {
     const page_one_string = await raw_pages_html[0].json();
     const page_two_string = await raw_pages_html[1].json();
     const page_three_string = await raw_pages_html[2].json();
+
     const $ = cheerio.load(page_one_string.results_html + page_two_string.results_html + page_three_string.results_html)
 
     //Thumbs Up Rating
@@ -42,6 +43,8 @@ async function getTopNewGames() {
 
         //Conditional Logic
         const hasThumbsUpReview = $(el).find('span.search_review_summary').length > 0;
+
+    
         if (hasThumbsUpReview) {
             const review = $(el).find('span.search_review_summary').attr('data-tooltip-html')
             const score = Number(review.split('<br>')[1].split('%')[0].trim());

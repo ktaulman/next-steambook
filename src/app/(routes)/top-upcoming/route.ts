@@ -93,7 +93,6 @@ export async function POST() {
             sql`BEGIN`
             upcoming.forEach(async (result, i) => {
                 const { appId, title, href, imgSrc, releaseDate } = result;
-                console.log({ ...result })
                 await sql`
                 INSERT INTO steambook.top_upcoming_apps (app_id, title, store_href, "store_imgSrc", release_date, "time")
                 VALUES (${appId}, ${title}, ${href}, ${imgSrc}, ${releaseDate}, CURRENT_TIMESTAMP)

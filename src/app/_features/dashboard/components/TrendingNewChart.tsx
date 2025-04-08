@@ -1,32 +1,55 @@
 import Chart from '@/app/_components/charts/Chart'
+import { sql } from '@/app/_db/db'
 
-export default function TrendingNewChart() {
-    const results = fetch('/top-new')
-    console.log(results)
+
+async function getTopNewGames() {
+    try {
+        const timeAtThirtyMinutesAgo = new Date(Date.now() - (30 * 60 * 1000))
+        const results = await sql`
+            SELECT *
+            FROM steambook.top_new_apps
+            WHERE "time" >= ${timeAtThirtyMinutesAgo}
+            ORDER BY "time" 
+            LIMIT 20
+            `
+        return results;
+    } catch (e) {
+        console.log(e) //TODO: implement error logging 
+        return []
+    }
+}
+
+export default async function TrendingNewChart() {
+    const newGames = await getTopNewGames();
+    if (!newGames || newGames.length === 0) return <h2>No Results Found</h2> //If there's no results to
+
+    const headers = Object.keys(newGames[0])
+
+
     return (
         <Chart>
             <Chart.Title>Chart</Chart.Title>
             <Chart.Grid>
                 <Chart.GridBody>
                     <Chart.GridRow>
-                        <Chart.GridHeader>
-                            1
-                        </Chart.GridHeader>
-                        <Chart.GridHeader>
-                            2
-                        </Chart.GridHeader>
-                        <Chart.GridHeader>
-                            3
-                        </Chart.GridHeader>
+                        {
+                            headers.map(el => (<Chart.GridHeader>
+                                {el}
+                            </Chart.GridHeader>))
+                        }
+
                     </Chart.GridRow>
 
                     {
-                        Array(5).fill(null)
+                        newGames
                             .map((el, i) => (<Chart.GridRow>
                                 {
-                                    Array(3).fill(null).map((el, index) => (
-                                        <Chart.GridCell> {i} x {index}</Chart.GridCell>
-                                    ))
+                                    Object.values(el).map((cellValue, index) => {
+                                        console.log({ cellValue })
+                                        return (
+                                            <Chart.GridCell key={cellValue + '_Grid_Cell'}> {JSON.stringify(cellValue)}</Chart.GridCell>
+                                        )
+                                    })
                                 }
                             </Chart.GridRow>
                             )
