@@ -1,12 +1,12 @@
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, ReactNode } from "react";
 //Children Components 
 function Title({ children }: PropsWithChildren) {
     return (
-        <h2>{children}</h2>
+        <h2 className='font-bold text-2xl'>{children}</h2>
     )
 }
 function Grid({ children }: PropsWithChildren) {
-    return <table className=' outline-1'>{children}</table>
+    return <table className=''>{children}</table>
 }
 function GridBody({ children }: PropsWithChildren) {
     return <tbody>{children}</tbody>
@@ -18,21 +18,21 @@ function GridFoot({ children }: PropsWithChildren) {
     return <tfoot>{children}</tfoot>
 }
 function GridHeader({ children }: PropsWithChildren) {
-    return <th>{children}</th>
+    return <th className='text-left underline '>{children}</th>
 }
-function GridRow({ children }: PropsWithChildren) {
-    return <tr>{children}</tr>
+function GridRow({ children, hoverable }: { children: ReactNode, hoverable?: boolean }) {
+    return <tr className={hoverable ? "hover:underline" : ''}>{children}</tr>
 }
 function GridCell({ children }: PropsWithChildren) {
     return (
-        <td className='outline-1'>{children}</td>
+        <td><div className='flex text-white'>{children}</div></td>
     )
 }
 
 //Root Component
 function Chart({ children }: PropsWithChildren) {
     return (
-        <div className="dark:text-white text-xs flex flex-col">
+        <div className="dark:text-white text-base flex flex-col gap-4 border-2 rounded-2xl px-6 py-2 ">
             {children}
         </div>
     )
