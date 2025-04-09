@@ -9,6 +9,7 @@ export function SearchProvider({ children }: PropsWithChildren) {
     const [selected, setSelected] = useState<null | SearchResult>(null);
     const resultsContext = useMemo(() => ({ results, setResults }), [results])
     const selectedContext = useMemo(() => ({ selected, setSelected }), [selected])
+    
     return (
         <SearchContext.Provider value={{ results: { ...resultsContext }, selected: { ...selectedContext } }}>
             {children}

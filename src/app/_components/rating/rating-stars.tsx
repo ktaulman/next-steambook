@@ -2,7 +2,7 @@
 import { StarIcon as StarIconOutlined } from "@heroicons/react/24/outline"
 import { StarIcon as StarIconSolid } from "@heroicons/react/24/solid"
 import { motion } from 'motion/react'
-import { useState, useEffect } from "react"
+import { useState } from "react"
 
 interface StarProps {
     value: number;

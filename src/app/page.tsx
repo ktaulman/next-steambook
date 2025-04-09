@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import TrendingNewChart from "./_features/dashboard/components/TrendingNewChart";
+import TrendingNewChart from "./_features/dashboard/components/TrendingNewChart"; 
 
 export default async function Page() {
     return (
