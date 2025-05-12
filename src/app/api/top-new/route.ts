@@ -44,7 +44,7 @@ async function getTopNewGames() {
         //Conditional Logic
         const hasThumbsUpReview = $(el).find('span.search_review_summary').length > 0;
 
-    
+
         if (hasThumbsUpReview) {
             const review = $(el).find('span.search_review_summary').attr('data-tooltip-html')
             const score = Number(review.split('<br>')[1].split('%')[0].trim());
@@ -112,16 +112,16 @@ export async function POST() {
             results.slice(0, 20).forEach(async (result, i) => {
                 const { releaseDate, title, appId, href, imgSrc, score, numberReviews } = result;
                 await sql`INSERT INTO steambook.top_new_apps (app_id, title, store_href, "store_imgSrc", release_date, score, number_reviews, "time")
-                VALUES ( ${appId}, ${title}, ${href}, ${imgSrc}, ${releaseDate}, ${score}, ${numberReviews}, CURRENT_TIMESTAMP)
+                VALUES ( ${appId}, ${title}, ${href}, ${imgSrc}, ${releaseDate}, ${Number(score)}, ${numberReviews}, CURRENT_TIMESTAMP)
                 `
             })
             sql`COMMIT`
             return Response.json('SUCCESS', { status: 200, statusText: 'db write successful' })
         }
-        return Response.json('PROCESSED ALREADY', { status: 409, statusText: 'CRON JOB ran previous records found within past 30 min' })
     } catch (e) {
-        console.log(e)
+
         sql`ROLLBACK`
-        return Response.json('FAILURE', { status: 500, statusText: '' })
+        throw Error(e)
+        return;
     }
 }

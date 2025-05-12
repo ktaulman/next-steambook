@@ -1,5 +1,18 @@
 import postgres from "postgres";
 import * as cheerio from "cheerio";
+
+export async function GET(request: Request) {
+    try {
+        const suggestions = await extractHtmlAndNormalizeToSearchResults({ requestUrl: request.url })
+        const reviews = await getAllReviewData(suggestions)
+        const results = combineAutocompleteAndReviewData({ suggestions, reviews })
+        return Response.json({ results })
+    } catch (e) {
+        return Response.json({ results: [] })
+    }
+}
+
+
 async function extractHtmlAndNormalizeToSearchResults({
     requestUrl
 }: {
@@ -66,7 +79,7 @@ async function getAllReviewData(suggestions: any[]) {
             //get releaseDate
             const date = $('.release_date').find('.date');
             const releaseDate = $(date).text();
-    
+
             //resolve
             return resolve({ id, scorePercentage, totalReviews, developer, publisher, tags, releaseDate })
         }
@@ -97,13 +110,3 @@ function combineAutocompleteAndReviewData({ suggestions, reviews }: {
 
 
 
-export async function GET(request: Request) {
-    try {
-        const suggestions = await extractHtmlAndNormalizeToSearchResults({ requestUrl: request.url })
-        const reviews = await getAllReviewData(suggestions)
-        const results = combineAutocompleteAndReviewData({ suggestions, reviews })
-        return Response.json({ results })
-    } catch (e) {
-        return Response.json({ results: [] })
-    }
-}

@@ -1,3 +1,4 @@
+import { Button } from "@mui/material";
 import { PropsWithChildren, ReactNode } from "react";
 //Children Components 
 function Title({ children }: PropsWithChildren) {
@@ -18,7 +19,7 @@ function GridFoot({ children }: PropsWithChildren) {
     return <tfoot>{children}</tfoot>
 }
 function GridHeader({ children }: PropsWithChildren) {
-    return <th className='text-left underline '>{children}</th>
+    return <th className='text-left underline mb-5'>{children}</th>
 }
 function GridRow({ children, hoverable }: { children: ReactNode, hoverable?: boolean }) {
     return <tr className={hoverable ? "hover:underline" : ''}>{children}</tr>
@@ -26,6 +27,23 @@ function GridRow({ children, hoverable }: { children: ReactNode, hoverable?: boo
 function GridCell({ children }: PropsWithChildren) {
     return (
         <td><div className='flex text-white'>{children}</div></td>
+    )
+}
+
+function GridButton({ children, disabled, onClick }: { children: ReactNode, disabled?: boolean, onClick?: () => void }) {
+
+    const getStyles = () => {
+
+        if (disabled) return {
+            color: 'grey',
+            cursor: 'disabled'
+        }
+        else return {
+            cursor: "pointer"
+        };
+    }
+    return (
+        <button type='submit' onClick={onClick} style={getStyles()} disabled={disabled}>{children}</button>
     )
 }
 
@@ -46,5 +64,6 @@ Chart.GridCell = GridCell;
 Chart.GridHead = GridHead;
 Chart.GridFoot = GridFoot;
 Chart.GridBody = GridBody;
+Chart.GridButton = GridButton;
 
 export default Chart; 
