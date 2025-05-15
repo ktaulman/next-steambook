@@ -1,18 +1,18 @@
+"use server"
+
 import { sql } from "@/app/_db/db"
 
 export async function getTopNewGames() {
-    "use server"
-    try {
-        const timeAtThirtyMinutesAgo = new Date(Date.now() - (30 * 60 * 1000))
-        const results = await sql`
-            SELECT *
-            FROM steambook.top_new_apps
-            WHERE "time" >= ${timeAtThirtyMinutesAgo}
-            ORDER BY "time" 
-            LIMIT 20
-            `
-        return results
-    } catch (e) {
-        throw Error(e.message)
-    }
+
+    const timeAtThirtyMinutesAgo = new Date(Date.now() - (30 * 60 * 1000))
+    const results = await sql`
+        SELECT *
+        FROM steambook.top_new_apps
+        WHERE "time" >= ${timeAtThirtyMinutesAgo}
+        ORDER BY "time" 
+        LIMIT 20
+        `
+    if (!results) return [];
+    return results
+
 }

@@ -1,3 +1,4 @@
+"use server"
 import * as cheerio from "cheerio";
 import { sql } from '@/app/_db/db'
 import { revalidatePath } from "next/cache";
@@ -16,7 +17,7 @@ async function fetchGameDataByPage({ start, count }: { start: number, count: num
     })
 }
 
-async function checkLastWrittenRecord() {
+async function checkLastWrittenRecord(): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
         try {
             const timeAtThirtyMinutesAgo = new Date(Date.now() - (30 * 60 * 1000))
@@ -27,7 +28,7 @@ async function checkLastWrittenRecord() {
                 ORDER BY "time" DESC 
                 LIMIT 1
             `
-            resolve(results)
+            resolve(results.length > 0)
         }
         catch (e) {
             reject(e)
@@ -43,7 +44,7 @@ export async function scrapeTopNewGames() {
         fetchGameDataByPage({ start: 100, count: 100 }),
         fetchGameDataByPage({ start: 200, count: 100 }),
     ];
-    const raw_pages_html = await Promise.all(promisesPages)
+    const raw_pages_html: any[] = await Promise.all(promisesPages)
 
     const page_one_string = await raw_pages_html[0].json();
     const page_two_string = await raw_pages_html[1].json();
@@ -52,7 +53,7 @@ export async function scrapeTopNewGames() {
     const $ = cheerio.load(page_one_string.results_html + page_two_string.results_html + page_three_string.results_html)
 
     //Thumbs Up Rating
-    const top_new_games = [];
+    const top_new_games: { releaseDate: string, title: string, appId: number, href: 'string', imgSrc: 'string' }[] = [];
     $('a[data-ds-appid]').each((i, el) => {
         const releaseDate = $(el).find('div.search_released').text().replace('/n', '').trim();
         const title = $(($(el).find('.title'))).text();
@@ -66,6 +67,7 @@ export async function scrapeTopNewGames() {
 
         if (hasThumbsUpReview) {
             const review = $(el).find('span.search_review_summary').attr('data-tooltip-html')
+            if (!review) return;
             const score = Number(review.split('<br>')[1].split('%')[0].trim());
             const numberReviews = Number(review.split('of the')[1].trim().split('user')[0].trim().replace(/,/g, ''));
             top_new_games.push({
@@ -73,34 +75,28 @@ export async function scrapeTopNewGames() {
             })
         }
     })
+    console.log('top_new_games.length', top_new_games.length)
     return top_new_games.slice(0, 20);
 }
 
 export async function refreshTopNewGames() {
-    'use server'
-    try {
-        //ping the GET route for /check-top-new
-        //should be a program to see if any records are timestamped for the last half hour
-        //if the last records are older than 30 minutes then you should hit the GET ENDPOINT to getTopNewGames() INSERT new records into the data base 
-        const recentRecord = await checkLastWrittenRecord();
-
-        if (recentRecord.length === 0) {
-            const results = await scrapeTopNewGames(); //get the scraped results that're formatted
-            sql`BEGIN`
-            results.slice(0, 20).forEach(async (result, i) => {
-                const { releaseDate, title, appId, href, imgSrc, score, numberReviews } = result;
-                await sql`INSERT INTO steambook.top_new_apps (app_id, title, store_href, "store_imgSrc", release_date, score, number_reviews, "time")
-                VALUES ( ${appId}, ${title}, ${href}, ${imgSrc}, ${releaseDate}, ${Number(score)}, ${numberReviews}, CURRENT_TIMESTAMP)
+    console.log('refreshing top new games')
+    //ping the GET route for /check-top-new
+    //should be a program to see if any records are timestamped for the last half hour
+    //if the last records are older than 30 minutes then you should hit the GET ENDPOINT to getTopNewGames() INSERT new records into the data base 
+    const isThereARecentRecord = await checkLastWrittenRecord();
+    if (isThereARecentRecord) return { message: 'Results are most recent.' }
+    const results = await scrapeTopNewGames(); //get the scraped results that're formatted
+    return;
+    sql`BEGIN`
+    results.slice(0, 20).forEach(async (result, i) => {
+        const { releaseDate, title, appId, href, imgSrc, score, numberReviews } = result;
+        await sql`INSERT INTO steambook.top_new_apps (app_id, title, store_href, "store_imgSrc", release_date, score, number_reviews, "time")
+                VALUES ( ${appId}, ${title}, ${href}, ${imgSrc}, ${releaseDate}, ${Number(score)}, ${Number(numberReviews)}, CURRENT_TIMESTAMP)
                 `
-            })
-            sql`COMMIT`
-            revalidatePath('/')
-            redirect('/')
-        }
-        return
-    } catch (e) {
-        console.log(e)
-        sql`ROLLBACK`
-        return
-    }
+    })
+    sql`COMMIT`
+
+    revalidatePath('/')
+    redirect('/')
 }

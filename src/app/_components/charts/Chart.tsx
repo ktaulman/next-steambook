@@ -1,4 +1,4 @@
-import { Button } from "@mui/material";
+
 import { PropsWithChildren, ReactNode } from "react";
 //Children Components 
 function Title({ children }: PropsWithChildren) {
@@ -19,14 +19,15 @@ function GridFoot({ children }: PropsWithChildren) {
     return <tfoot>{children}</tfoot>
 }
 function GridHeader({ children }: PropsWithChildren) {
-    return <th className='text-left underline mb-5'>{children}</th>
+
+    return <th className='text-left underline '>{children}</th>
 }
 function GridRow({ children, hoverable }: { children: ReactNode, hoverable?: boolean }) {
-    return <tr className={hoverable ? "hover:underline" : ''}>{children}</tr>
+    return <tr className={hoverable ? " border-b-2 border-b-transparent hover:border-b-2 hover:border-white" : ' '}>{children}</tr>
 }
 function GridCell({ children }: PropsWithChildren) {
     return (
-        <td><div className='flex text-white'>{children}</div></td>
+        <td >{children}</td>
     )
 }
 
@@ -50,7 +51,7 @@ function GridButton({ children, disabled, onClick }: { children: ReactNode, disa
 //Root Component
 function Chart({ children }: PropsWithChildren) {
     return (
-        <div className="dark:text-white text-base flex flex-col gap-4 border-2 rounded-2xl px-6 py-2 ">
+        <div className="  flex flex-col gap-4  px-6 py-2 text-sm ">
             {children}
         </div>
     )
