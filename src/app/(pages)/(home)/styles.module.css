@@ -7,6 +7,6 @@
 .hovering {
     @apply stroke-black
 }
-.notHovering{
+.notHovering svg{
     @apply stroke-white text-white
 }

@@ -1,8 +1,6 @@
-
-
 import { Duru_Sans } from "next/font/google";
 import "./globals.css";
-import SideNav from '@/app/_components/navigation/SideNav';
+import TopNavBar from "./_components/navigation/TopNavBar";
 
 
 const duru_sans = Duru_Sans({
@@ -21,9 +19,8 @@ export default function RootLayout({
       <body
         className={duru_sans.className + ""}
       >
-        <main className='flex h-screen'>
-
-          <SideNav />
+        <main className='flex flex-col w-screen h-screen'>
+          <TopNavBar />
           <section className='grow shrink '>
             {children}
           </section>
