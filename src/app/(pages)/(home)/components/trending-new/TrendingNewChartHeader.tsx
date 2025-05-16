@@ -50,9 +50,9 @@ export default function TrendingNewChartHeader() {
 
 
                                     {title}
-                                    {hovering && (
-                                        <ArrowsUpDownIcon className="size-5 ml-2 cursor-pointer" />
-                                    )}
+
+                                    {<ArrowsUpDownIcon className="size-5 ml-2 cursor-pointer" />
+                                    }
                                     {/* {!direction && <ArrowsUpDownIcon className='size-5 ml-2' />} */}
                                 </div>
 

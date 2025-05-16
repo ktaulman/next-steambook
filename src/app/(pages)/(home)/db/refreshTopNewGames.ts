@@ -87,7 +87,7 @@ export async function refreshTopNewGames() {
     const isThereARecentRecord = await checkLastWrittenRecord();
     if (isThereARecentRecord) return { message: 'Results are most recent.' }
     const results = await scrapeTopNewGames(); //get the scraped results that're formatted
-    return;
+
     sql`BEGIN`
     results.slice(0, 20).forEach(async (result, i) => {
         const { releaseDate, title, appId, href, imgSrc, score, numberReviews } = result;

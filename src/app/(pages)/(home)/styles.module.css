@@ -4,3 +4,9 @@
     @apply opacity-75;
 }
 
+.hovering {
+    @apply stroke-black
+}
+.notHovering{
+    @apply stroke-white text-white
+}

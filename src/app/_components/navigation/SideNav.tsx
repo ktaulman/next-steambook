@@ -1,11 +1,18 @@
 'use client';
 import Link from 'next/link';
 import Image from 'next/image'
-import { PlusCircleIcon, ListBulletIcon, ArrowTrendingUpIcon, UserCircleIcon } from '@heroicons/react/24/outline';
+import { PlusCircleIcon, ListBulletIcon, ArrowTrendingUpIcon, UserCircleIcon, HomeIcon, ArrowRightStartOnRectangleIcon } from '@heroicons/react/24/outline';
+import sideNavStyles from './sideNavStyles.module.css'
+import { usePathname } from 'next/navigation';
 
 const LINKS = [
     {
-        text: 'Post Review',
+        text: 'Home',
+        href: '/',
+        icon: <HomeIcon className='size-6' />
+    },
+    {
+        text: 'Create Review',
         href: '/create',
         icon: <PlusCircleIcon className='size-6' />
     },
@@ -19,38 +26,53 @@ const LINKS = [
         href: '/community',
         icon: <ArrowTrendingUpIcon className='size-6' />
     },
-    {
-        text: 'Profile',
-        href: '/profile',
-        icon: <UserCircleIcon className='size-6' />
-    },
 ]
 
 export default function SideNav() {
-
+    const pathname = usePathname();
+    console.log({ pathname })
     return (
 
-        <div className='flex flex-col items-start gap-6 mt-10 px-4 '>
+        <aside className={sideNavStyles.root}>
             {/* Logo */}
-            <div className="h-[50px] w-full mb-20">
+            <Link href='/' className={sideNavStyles.logo}>
+
 
                 <Image
                     src="/steambook.svg"
-                    width={50}
-                    height={50}
+                    width={40}
+                    height={40}
                     alt="Logo"
                 />
-            </div>
+                Steambook
+            </Link>
 
             {/* Links */}
-            <nav className="flex flex-col gap-10">
+            <nav className={sideNavStyles.nav}>
                 {
-                    LINKS.map(({ text, href, icon }) => (
-                        <Link key={href} className='flex items-center hover:font-bold  gap-4 text-sm  ' href={href}>{icon} {text} </Link>
-                    ))
+                    LINKS.map(({ text, href, icon }) => {
+
+                        const activeStyling = href === pathname ? sideNavStyles.active : '';
+                        return (
+                            <Link key={href} className={`${sideNavStyles.link} ${activeStyling}`} href={href}>
+
+                                {icon}
+                                {text}
+
+                            </Link>
+                        )
+                    })
                 }
 
             </nav>
-        </div>)
+            <div className={sideNavStyles.footer}>
+                <UserCircleIcon className={sideNavStyles.userIconFooter} />
+                <span className='flex-1'>
+                    Steve Smith
+                </span>
+                <ArrowRightStartOnRectangleIcon className='size-5 justify-self-end font-extrabold' />
+            </div>
+
+        </aside>)
 
 }

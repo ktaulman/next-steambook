@@ -21,16 +21,15 @@ export default function RootLayout({
       <body
         className={duru_sans.className + ""}
       >
-        <main className='flex h-screen bg-white '>
+        <main className='flex h-screen'>
 
-          <div className="w-48 bg-white  border-r-2 border-solid border-gray-500">
-            <SideNav />
-          </div>
-          <div id='' className=' bg-white  flex-1'>
+          <SideNav />
+          <section className='grow shrink '>
             {children}
-          </div>
+          </section>
 
         </main>
+
       </body>
     </html>
   );

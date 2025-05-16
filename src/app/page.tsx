@@ -6,15 +6,13 @@ import TrendingNewSkeleton from "./(pages)/(home)/components/trending-new/Trendi
 
 export default async function Page() {
     return (
-        <div className='py-6 w-full h-full'>
-            <TrendingNewChart>
-                <TrendingNewChartHeader />
-                <Suspense fallback={<TrendingNewSkeleton />}>
-                    <TrendingNewChartBody />
-                </Suspense>
-            </TrendingNewChart>
+        <TrendingNewChart>
+            <TrendingNewChartHeader />
+            <Suspense fallback={<TrendingNewSkeleton />}>
+                <TrendingNewChartBody />
+            </Suspense>
+        </TrendingNewChart>
 
-        </div>
 
     )
 }
