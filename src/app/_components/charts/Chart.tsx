@@ -13,14 +13,14 @@ function GridBody({ children }: PropsWithChildren) {
     return <tbody>{children}</tbody>
 }
 function GridHead({ children }: PropsWithChildren) {
-    return <thead>{children}</thead>
+    return <thead className='pb-2'>{children}</thead>
 }
 function GridFoot({ children }: PropsWithChildren) {
     return <tfoot>{children}</tfoot>
 }
 function GridHeader({ children }: PropsWithChildren) {
 
-    return <th className='text-left underline '>{children}</th>
+    return <th className='text-left  tracking-wide font-bold text-base'>{children}</th>
 }
 function GridRow({ children, hoverable }: { children: ReactNode, hoverable?: boolean }) {
     return <tr className={hoverable ? " border-b-2 border-b-transparent hover:border-b-2 hover:border-white" : ' '}>{children}</tr>
@@ -31,22 +31,6 @@ function GridCell({ children }: PropsWithChildren) {
     )
 }
 
-function GridButton({ children, disabled, onClick }: { children: ReactNode, disabled?: boolean, onClick?: () => void }) {
-
-    const getStyles = () => {
-
-        if (disabled) return {
-            color: 'grey',
-            cursor: 'disabled'
-        }
-        else return {
-            cursor: "pointer"
-        };
-    }
-    return (
-        <button type='submit' onClick={onClick} style={getStyles()} disabled={disabled}>{children}</button>
-    )
-}
 
 //Root Component
 function Chart({ children }: PropsWithChildren) {
@@ -64,7 +48,6 @@ Chart.GridRow = GridRow;
 Chart.GridCell = GridCell;
 Chart.GridHead = GridHead;
 Chart.GridFoot = GridFoot;
-Chart.GridBody = GridBody;
-Chart.GridButton = GridButton;
+Chart.GridBody = GridBody; 0
 
 export default Chart; 

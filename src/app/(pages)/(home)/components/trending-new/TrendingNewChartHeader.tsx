@@ -4,6 +4,7 @@ import { ArrowsUpDownIcon } from "@heroicons/react/16/solid";
 import { usePathname } from "next/navigation"
 import { useState } from "react";
 import styles from '../../styles.module.css'
+import { CalendarDateRangeIcon } from "@heroicons/react/24/outline";
 // up arrow ,down arrow, make headers {title, column,direction}
 
 export default function TrendingNewChartHeader() {
@@ -16,6 +17,7 @@ export default function TrendingNewChartHeader() {
         {
             title: 'Release',
             column: 'release_date',
+            icon: CalendarDateRangeIcon,
             direction: null
         },
         {
@@ -50,7 +52,7 @@ export default function TrendingNewChartHeader() {
 
 
                                     {title}
-
+                                    { }
                                     {<ArrowsUpDownIcon className="size-5 ml-2 cursor-pointer" />
                                     }
                                     {/* {!direction && <ArrowsUpDownIcon className='size-5 ml-2' />} */}

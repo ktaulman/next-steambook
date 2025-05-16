@@ -18,7 +18,7 @@ export default async function TrendingNewChartBody() {
 
 
                             <Chart.GridRow hoverable key={'new_row' + i}>
-                                <Chart.GridCell key={'cell_title' + i}><a style={{ letterSpacing: '1.25px', fontWeight: 600 }} href={store_href} target="_blank">{title}</a></Chart.GridCell>
+                                <Chart.GridCell key={'cell_title' + i}><a className='hover:text-sky-700' href={store_href} target="_blank">{title}</a></Chart.GridCell>
                                 <Chart.GridCell key={'cell_date' + i}>
                                     {readableDate}
                                 </Chart.GridCell>

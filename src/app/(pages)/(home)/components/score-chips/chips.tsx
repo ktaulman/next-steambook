@@ -1,24 +1,24 @@
-import { HandThumbDownIcon, HandThumbUpIcon } from "@heroicons/react/24/solid"
+import { HandThumbDownIcon, HandThumbUpIcon, HandRaisedIcon } from "@heroicons/react/24/solid"
 import { PropsWithChildren } from "react"
 
 
 
 export function HighScoreChip({ children }: PropsWithChildren) {
-    return (<>
-        <HandThumbUpIcon color='green' className='h-4 w-4' />
-        <p className='text-sm font-extrabold text-green-600' > {children} </p>
-    </>)
+    return (<div className='flex justify-start items-center  bg-green-600 rounded-xl px-2 w-16 py-1'>
+        <HandThumbUpIcon color='white' className=' w-4 ' />
+        <p className='text-xs text-white flex-1 flex justify-center' > {children} </p>
+    </div>)
 }
 export function MediumScoreChip({ children }: PropsWithChildren) {
-    return (<>
-        <HandThumbUpIcon color='orange' className='h-4 w-4' />
-        <p className='text-sm font-extrabold text-orange-600' > {children} </p>
-    </>)
+    return (<div className='flex justify-start items-center  bg-orange-400 rounded-xl px-2 w-16 py-1'>
+        <HandThumbUpIcon color='white' className=' w-4' />
+        <p className=' flex-1 flex justify-center text-xs  text-white' > {children} </p>
+    </div>)
 }
 export function LowScoreChip({ children }: PropsWithChildren) {
-    return (<>
-        <HandThumbDownIcon color='red' className='h-4 w-4' />
-        <p className='text-sm font-extrabold text-red-600' > {children} </p>
-    </>)
+    return (<div className='flex justify-start items-center  bg-red-500 rounded-xl px-2 w-16 py-1'>
+        <HandRaisedIcon color='white' className=' w-4' />
+        <p className=' flex-1 flex justify-center text-xs  text-white' > {children} </p>
+    </div>)
 }
 
