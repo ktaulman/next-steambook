@@ -70,7 +70,7 @@ export default function TopNavBar() {
                 <span className='flex-1'>
                     Steve Smith
                 </span>
-                <ArrowRightStartOnRectangleIcon className='size-5 justify-self-end font-extrabold' />
+                <ArrowRightStartOnRectangleIcon className='size-5 justify-self-end font-extrabold hover:scale-115 cursor-pointer transition-all ml-12 hover:stroke-red-400' />
             </div>
 
         </header>)
