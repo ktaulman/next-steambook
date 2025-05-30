@@ -35,11 +35,12 @@ function TextArea({ maxLength, onChange }: { maxLength: number, onChange: Change
 function CharacterCounter({ maxLength, characterCount }: { maxLength: number, characterCount: number }) {
     return <p className={`${(maxLength - characterCount) < 10 ? "text-red-400" : ''}`}>{maxLength - characterCount}</p>
 }
+//Root
 function ReviewEditor({ children }: PropsWithChildren) {
     return <div>{children}</div>
 }
 ReviewEditor.TextAreaLabel = TextAreaLabel;
 ReviewEditor.TextArea = TextArea;
-ReviewEditor.CharacterCounter = CharacterCounter; 
+ReviewEditor.CharacterCounter = CharacterCounter;
 
 

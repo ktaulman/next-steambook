@@ -83,7 +83,7 @@ export async function refreshTopNewGames() {
     console.log('refreshing top new games')
     //ping the GET route for /check-top-new
     //should be a program to see if any records are timestamped for the last half hour
-    //if the last records are older than 30 minutes then you should hit the GET ENDPOINT to getTopNewGames() INSERT new records into the data base 
+    //if the last records are older than 30 minutes then you should hit the GET ENDPOINT to listTopNewGrame() INSERT new records into the data base 
     const isThereARecentRecord = await checkLastWrittenRecord();
     if (isThereARecentRecord) return { message: 'Results are most recent.' }
     const results = await scrapeTopNewGames(); //get the scraped results that're formatted
