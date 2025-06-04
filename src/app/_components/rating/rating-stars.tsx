@@ -2,7 +2,7 @@
 import { StarIcon as StarIconOutlined } from "@heroicons/react/24/outline"
 import { StarIcon as StarIconSolid } from "@heroicons/react/24/solid"
 import { motion } from 'motion/react'
-import { useState, useEffect } from "react"
+import { useState } from "react"
 
 interface StarProps {
     value: number;
@@ -13,7 +13,7 @@ interface StarProps {
 
 function Star({ value, handleClick, selectedRating }: StarProps) {
     return (
-        <label className=' w-12 h-12 cursor-pointer dark:text-white'>
+        <label className=' w-12 h-12 cursor-pointer '>
             <input type='radio' onClick={() => handleClick(value)} value={value} name='review_starRating' className=' absolute opacity-0 cursor-none ' />
             {selectedRating === value ? (
                 <motion.div

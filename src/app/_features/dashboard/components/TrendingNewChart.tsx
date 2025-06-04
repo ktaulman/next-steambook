@@ -4,7 +4,7 @@ import { HandThumbDownIcon, HandThumbUpIcon, DocumentChartBarIcon } from '@heroi
 import Link from 'next/link';
 
 
-async function getTopNewGames() {
+async function listTopNewGrame() {
     try {
         const timeAtThirtyMinutesAgo = new Date(Date.now() - (30 * 60 * 1000))
         const results = await sql`
@@ -31,7 +31,7 @@ function getScore(score: number): { highScore: boolean, mediumScore: boolean, lo
 }
 
 export default async function TrendingNewChart() {
-    const newGames = await getTopNewGames();
+    const newGames = await listTopNewGrame();
     if (!newGames || newGames.length === 0) return <h2>No Results Found</h2> //If there's no results to
 
     return (

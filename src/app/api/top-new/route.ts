@@ -17,7 +17,7 @@ async function fetchGameDataByPage({ start, count }: { start: number, count: num
     })
 }
 
-async function getTopNewGames() {
+async function listTopNewGrame() {
     //Pages Get At Least For Pages 
     const promisesPages = [
         fetchGameDataByPage({ start: 0, count: 100 }),
@@ -44,7 +44,7 @@ async function getTopNewGames() {
         //Conditional Logic
         const hasThumbsUpReview = $(el).find('span.search_review_summary').length > 0;
 
-    
+
         if (hasThumbsUpReview) {
             const review = $(el).find('span.search_review_summary').attr('data-tooltip-html')
             const score = Number(review.split('<br>')[1].split('%')[0].trim());
@@ -103,25 +103,25 @@ export async function POST() {
     try {
         //ping the GET route for /check-top-new
         //should be a program to see if any records are timestamped for the last half hour
-        //if the last records are older than 30 minutes then you should hit the GET ENDPOINT to getTopNewGames() INSERT new records into the data base 
+        //if the last records are older than 30 minutes then you should hit the GET ENDPOINT to listTopNewGrame() INSERT new records into the data base 
         const recentRecord = await checkLastWrittenRecord();
 
         if (recentRecord.length === 0) {
-            const results = await getTopNewGames(); //get the scraped results that're formatted
+            const results = await listTopNewGrame(); //get the scraped results that're formatted
             sql`BEGIN`
             results.slice(0, 20).forEach(async (result, i) => {
                 const { releaseDate, title, appId, href, imgSrc, score, numberReviews } = result;
                 await sql`INSERT INTO steambook.top_new_apps (app_id, title, store_href, "store_imgSrc", release_date, score, number_reviews, "time")
-                VALUES ( ${appId}, ${title}, ${href}, ${imgSrc}, ${releaseDate}, ${score}, ${numberReviews}, CURRENT_TIMESTAMP)
+                VALUES ( ${appId}, ${title}, ${href}, ${imgSrc}, ${releaseDate}, ${Number(score)}, ${numberReviews}, CURRENT_TIMESTAMP)
                 `
             })
             sql`COMMIT`
             return Response.json('SUCCESS', { status: 200, statusText: 'db write successful' })
         }
-        return Response.json('PROCESSED ALREADY', { status: 409, statusText: 'CRON JOB ran previous records found within past 30 min' })
     } catch (e) {
-        console.log(e)
+
         sql`ROLLBACK`
-        return Response.json('FAILURE', { status: 500, statusText: '' })
+        throw Error(e)
+        return;
     }
 }

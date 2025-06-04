@@ -1,13 +1,12 @@
-
-// import { Roboto } from 'next/font/google';
 import { Duru_Sans } from "next/font/google";
 import "./globals.css";
-import SideNav from './_components/navigation/side-nav';
+import TopNavBar from "./_components/navigation/TopNavBar";
 
 
 const duru_sans = Duru_Sans({
   weight: ['400'],
 });
+
 
 
 export default function RootLayout({
@@ -20,16 +19,14 @@ export default function RootLayout({
       <body
         className={duru_sans.className + ""}
       >
-        <main className='flex h-screen dark '>
-
-          <div className="w-60 dark:bg-black ">
-            <SideNav />
-          </div>
-          <div className=' dark:bg-black dark:text-white flex-1'>
+        <main className='flex flex-col w-screen h-screen'>
+          <TopNavBar />
+          <section className='grow shrink '>
             {children}
-          </div>
+          </section>
 
         </main>
+
       </body>
     </html>
   );
