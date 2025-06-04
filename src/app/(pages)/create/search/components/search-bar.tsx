@@ -11,10 +11,12 @@ import { SearchContext } from '../context/search-provider';
 function SearchResultCard({ id, name, scorePercentage, totalReviews, imgSrc, disableHover, developer, publisher, tags }: SearchResultCardProps) {
     return (
         <div key={id} className={`grid grid-cols-2 grid-rows-10 w-full  ${!disableHover ? 'hover:cursor-pointer' : ''} hover:opacity-90 ${!disableHover ? 'hover:font-semibold' : ''}  p-4 max-w-[800px] bg-white  `}>
+
             <div className='flex flex-col  col-span-1 row-span-9'>
                 <h2 className='font-bold text-2xl'>
                     {name}
                 </h2>
+
                 <SteamReviewChip
                     scorePercentage={`${scorePercentage}%`}
                     totalReviews={totalReviews}
@@ -55,9 +57,11 @@ export default function SearchBarWithContext() {
     //Animations
 
     return (
+        //Root
         <div className='relative h-30  '>
 
             {selected.selected === null ? (
+                //C-Search 
                 <input
                     className='block w-full  pl-3 outline-none h-24 text-xl focus:font-bold border-b-2 border-b-white '
                     placeholder='Search Game Here'
@@ -65,56 +69,63 @@ export default function SearchBarWithContext() {
                     onFocus={e => handleChange(e.target.value)}
                 />
             ) : (
+                //C-Selected Result
                 <motion.div
                     initial={{ opacity: 0 }}
-                    animate={{
+                    animate={{+
                         opacity: 1,
-                        transition: { duration: 0.3 }
+            transition: {duration: 0.3 }
                     }}
 
                     className='w-full rounded-md  py-[9px] pl-0 pt-4 text-sm outline-none  flex '>
-                    <SearchResultCard
-                        id={selected.selected.id}
-                        name={selected.selected.name}
-                        imgSrc={selected.selected.imgSrc}
-                        scorePercentage={selected.selected.scorePercentage}
-                        totalReviews={selected.selected.totalReviews}
-                        developer={selected.selected.developer}
-                        publisher={selected.selected.publisher}
-                        tags={selected.selected.tags}
-                        disableHover={true}
-                    />
-                    <button className='text-red-800 w-8 h-8 cursor-pointer hover:text-red-500' onClick={() => selected.setSelected(null)}> <XCircleIcon /> {''}</button>
-                </motion.div>
-            )}
+            <SearchResultCard
+                id={selected.selected.id}
+                name={selected.selected.name}
+                imgSrc={selected.selected.imgSrc}
+                scorePercentage={selected.selected.scorePercentage}
+                totalReviews={selected.selected.totalReviews}
+                developer={selected.selected.developer}
+                publisher={selected.selected.publisher}
+                tags={selected.selected.tags}
+                disableHover={true}
+            />
+            <button className='text-red-800 w-8 h-8 cursor-pointer hover:text-red-500' onClick={() => selected.setSelected(null)}> <XCircleIcon /> {''}</button>
+        </motion.div>
+    )
+}
 
 
 
-            {/* RESULTS */}
-            {results.results.length > 0 && (
-                <div className=' absolute flex flex-col  min-h-[130px]  gap-0  z-30  w-full px-6'>
+{/* RESULTS */ }
 
-                    {results.results.map(({ id, name, imgSrc, scorePercentage, totalReviews, developer, publisher, tags }, i) => {
+{
+    results.results.length > 0 && (
+        <div className=' absolute flex flex-col  min-h-[130px]  gap-0  z-30  w-full px-6'>
 
-                        return (
-                            <div key={id + 'div_wrapper bg-white '} onClick={() => handleSearchResultCardClick(i)}>
-                                <SearchResultCard
-                                    id={id}
-                                    name={name}
-                                    imgSrc={imgSrc}
-                                    scorePercentage={scorePercentage}
-                                    totalReviews={totalReviews}
-                                    developer={developer}
-                                    publisher={publisher}
-                                    tags={tags}
-                                />
-                            </div>
-                        )
-                    })}
-                </div>
-            )}
+            {results.results.map(({ id, name, imgSrc, scorePercentage, totalReviews, developer, publisher, tags }, i) => {
 
+                return (
+                    //C-ResultsContainer
+                    //C-ResultCard
+                    <div key={id + 'div_wrapper bg-white '} onClick={() => handleSearchResultCardClick(i)}>
+                        <SearchResultCard
+                            id={id}
+                            name={name}
+                            imgSrc={imgSrc}
+                            scorePercentage={scorePercentage}
+                            totalReviews={totalReviews}
+                            developer={developer}
+                            publisher={publisher}
+                            tags={tags}
+                        />
+                    </div>
+                )
+            })}
         </div>
+    )
+}
+
+        </div >
 
     )
 

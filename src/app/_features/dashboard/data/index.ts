@@ -1,6 +1,6 @@
 import { sql } from "@/app/_db/db"
 
-export async function getTopNewGames() {
+export async function listTopNewGrame() {
     try {
         const timeAtThirtyMinutesAgo = new Date(Date.now() - (30 * 60 * 1000))
         const results = await sql`

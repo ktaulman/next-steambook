@@ -17,7 +17,7 @@ async function fetchGameDataByPage({ start, count }: { start: number, count: num
     })
 }
 
-async function getTopNewGames() {
+async function listTopNewGrame() {
     //Pages Get At Least For Pages 
     const promisesPages = [
         fetchGameDataByPage({ start: 0, count: 100 }),
@@ -103,11 +103,11 @@ export async function POST() {
     try {
         //ping the GET route for /check-top-new
         //should be a program to see if any records are timestamped for the last half hour
-        //if the last records are older than 30 minutes then you should hit the GET ENDPOINT to getTopNewGames() INSERT new records into the data base 
+        //if the last records are older than 30 minutes then you should hit the GET ENDPOINT to listTopNewGrame() INSERT new records into the data base 
         const recentRecord = await checkLastWrittenRecord();
 
         if (recentRecord.length === 0) {
-            const results = await getTopNewGames(); //get the scraped results that're formatted
+            const results = await listTopNewGrame(); //get the scraped results that're formatted
             sql`BEGIN`
             results.slice(0, 20).forEach(async (result, i) => {
                 const { releaseDate, title, appId, href, imgSrc, score, numberReviews } = result;
