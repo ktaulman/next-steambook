@@ -1,18 +1,16 @@
-"use server"
+"use server";
 
-import { sql } from "@/app/_db/db"
+import { sql } from "@/app/_db/db";
 
 export async function listTopNewGrame() {
-
-    const timeAtThirtyMinutesAgo = new Date(Date.now() - (30 * 60 * 1000))
-    const results = await sql`
+  const timeAtOneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
+  const results = await sql`
         SELECT *
         FROM steambook.top_new_apps
-        WHERE "time" >= ${timeAtThirtyMinutesAgo}
-        ORDER BY "time" 
-        LIMIT 20
-        `
-    if (!results) return [];
-    return results
-
+        WHERE "time" >= ${timeAtOneHourAgo}
+        ORDER BY release_date DESC
+        LIMIT 100
+        `;
+  if (!results) return [];
+  return results;
 }
