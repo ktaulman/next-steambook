@@ -1,44 +1,55 @@
-
 import { PropsWithChildren, ReactNode } from "react";
-//Children Components 
+//Children Components
 function Title({ children }: PropsWithChildren) {
-    return (
-        <h2 className='font-bold text-2xl'>{children}</h2>
-    )
+  return <h2 className="font-bold text-2xl block">{children}</h2>;
 }
 function Grid({ children }: PropsWithChildren) {
-    return <table className=''>{children}</table>
+  return <table className="w-full">{children}</table>;
 }
 function GridBody({ children }: PropsWithChildren) {
-    return <tbody>{children}</tbody>
+  return <tbody className="table-fixed overflow-y-scroll ">{children}</tbody>;
 }
 function GridHead({ children }: PropsWithChildren) {
-    return <thead className='pb-2'>{children}</thead>
+  return <thead className="pb-2">{children}</thead>;
 }
 function GridFoot({ children }: PropsWithChildren) {
-    return <tfoot>{children}</tfoot>
+  return <tfoot>{children}</tfoot>;
 }
 function GridHeader({ children }: PropsWithChildren) {
-
-    return <th className='text-left  tracking-wide font-bold text-base'>{children}</th>
+  return (
+    <th className="text-left  tracking-wide font-bold text-sm">{children}</th>
+  );
 }
-function GridRow({ children, hoverable }: { children: ReactNode, hoverable?: boolean }) {
-    return <tr className={hoverable ? " border-b-2 border-b-transparent hover:border-b-2 hover:border-white" : ' '}>{children}</tr>
+function GridRow({
+  children,
+  hoverable,
+}: {
+  children: ReactNode;
+  hoverable?: boolean;
+}) {
+  return (
+    <tr
+      className={
+        hoverable
+          ? " border-b-2 border-b-transparent hover:border-b-2 hover:border-white"
+          : " "
+      }
+    >
+      {children}
+    </tr>
+  );
 }
 function GridCell({ children }: PropsWithChildren) {
-    return (
-        <td >{children}</td>
-    )
+  return <td>{children}</td>;
 }
-
 
 //Root Component
 function Chart({ children }: PropsWithChildren) {
-    return (
-        <div className="  flex flex-col gap-4  px-6 py-2 text-sm ">
-            {children}
-        </div>
-    )
+  return (
+    <div className="  flex flex-col gap-4  px-6 py-2 text-sm bg-red-500 overflow-y-auto">
+      {children}
+    </div>
+  );
 }
 
 Chart.Title = Title;
@@ -48,6 +59,7 @@ Chart.GridRow = GridRow;
 Chart.GridCell = GridCell;
 Chart.GridHead = GridHead;
 Chart.GridFoot = GridFoot;
-Chart.GridBody = GridBody; 0
+Chart.GridBody = GridBody;
+0;
 
-export default Chart; 
+export default Chart;

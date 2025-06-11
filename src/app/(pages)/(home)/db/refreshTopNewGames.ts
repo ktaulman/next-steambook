@@ -13,20 +13,7 @@ export async function refreshTopNewGames() {
   if (isThereARecentRecord) return { message: "Results are most recent." };
   const results = await scrapeTopNewGamesByCount(100); //get the scraped results that're formatted
 
-  sql`BEGIN`;
-  results.forEach(
-    async (
-      { releaseDate, title, appId, href, imgSrc, score, numberReviews },
-      i
-    ) => {
-      await sql`INSERT INTO steambook.top_new_apps (app_id, title, store_href, "store_imgSrc", release_date, score, number_reviews, "time")
-                VALUES ( ${appId}, ${title}, ${href}, ${imgSrc}, ${releaseDate}, ${Number(
-        score
-      )}, ${Number(numberReviews)}, CURRENT_TIMESTAMP)
-                `;
-    }
-  );
-  sql`COMMIT`;
+  await sql`insert into steambook.top_new_apps ${sql(results)}`;
 
   revalidatePath("/");
   redirect("/");

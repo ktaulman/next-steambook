@@ -1,4 +1,4 @@
-import { listTopNewGrame } from "../../db/listTopNewGames";
+import { listTopNewGames } from "../../db/listTopNewGames";
 import Chart from "@/app/_components/charts/Chart";
 import { getScore } from "../../utils";
 import {
@@ -6,8 +6,8 @@ import {
   MediumScoreChip,
   LowScoreChip,
 } from "../score-chips/chips";
-export default async function TrendingNewChartBody() {
-  const newGames = await listTopNewGrame();
+export default async function TrendingNewChartBody({ sort, sortDirection }) {
+  const newGames = await listTopNewGames(sort, sortDirection);
 
   return (
     <Chart.GridBody>

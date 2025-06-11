@@ -1,8 +1,5 @@
 import * as cheerio from "cheerio";
-import {
-  fetchGameDataByCount,
-  fetchGameDataByPage,
-} from "./fetchGameDataByCount";
+import { fetchGameDataByCount } from "./fetchGameDataByCount";
 
 export async function scrapeTopNewGamesByCount(count: number) {
   //set a target number Top 100
@@ -31,15 +28,15 @@ export async function scrapeTopNewGamesByCount(count: number) {
     const $ = cheerio.load(raw_combined_html);
 
     $("a[data-ds-appid]").each((i, el) => {
-      const releaseDate = $(el)
+      const release_date = $(el)
         .find("div.search_released")
         .text()
         .replace("/n", "")
         .trim();
       const title = $($(el).find(".title")).text();
-      const appId = Number($(el).attr("data-ds-appid"));
-      const href = $(el).attr("href").split("?")[0];
-      const imgSrc = $($(el).find("img")).attr("src");
+      const app_id = Number($(el).attr("data-ds-appid"));
+      const store_href = $(el).attr("href").split("?")[0];
+      const store_imgSrc = $($(el).find("img")).attr("src");
 
       //Conditional Logic
       const hasThumbsUpReview =
@@ -51,7 +48,7 @@ export async function scrapeTopNewGamesByCount(count: number) {
           .attr("data-tooltip-html");
         if (!review) return;
         const score = Number(review.split("<br>")[1].split("%")[0].trim());
-        const numberReviews = Number(
+        const number_reviews = Number(
           review
             .split("of the")[1]
             .trim()
@@ -60,15 +57,14 @@ export async function scrapeTopNewGamesByCount(count: number) {
             .replace(/,/g, "")
         );
         results.push({
-          result_index: i,
-          timestamp: Date.now(),
-          releaseDate,
+          release_date,
           title,
-          appId,
-          href,
-          imgSrc,
+          app_id,
+          store_href,
+          store_imgSrc,
           score,
-          numberReviews,
+          number_reviews,
+          time_scraped: Date.now(),
         });
       }
     });
