@@ -16,9 +16,8 @@ export default function RootLayout({
       <body className={duru_sans.className + ""}>
         <main className="flex flex-col w-screen h-screen">
           <TopNavBar />
-          <section className="grow flex flex-row items-center w-full bg-red-400">
-            {children}
-          </section>
+
+          {children}
         </main>
       </body>
     </html>

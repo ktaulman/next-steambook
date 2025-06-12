@@ -7,7 +7,7 @@ export default async function TrendingNewChart({
 }: PropsWithChildren) {
   return (
     <Chart>
-      {/* <Chart.Title>Top New Games</Chart.Title> */}
+      <Chart.Title>Top New Games</Chart.Title>
       <Chart.Grid>{children}</Chart.Grid>
       <TrendingNewChartRefreshButton />
     </Chart>
