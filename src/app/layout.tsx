@@ -2,12 +2,9 @@ import { Duru_Sans } from "next/font/google";
 import "./globals.css";
 import TopNavBar from "./_components/navigation/TopNavBar";
 
-
 const duru_sans = Duru_Sans({
-  weight: ['400'],
+  weight: ["400"],
 });
-
-
 
 export default function RootLayout({
   children,
@@ -16,17 +13,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={duru_sans.className + ""}
-      >
-        <main className='flex flex-col w-screen h-screen'>
+      <body className={duru_sans.className + ""}>
+        <main className="flex flex-col w-screen h-screen">
           <TopNavBar />
-          <section className='grow shrink '>
+          <section className="grow flex flex-row items-center w-full bg-red-400">
             {children}
           </section>
-
         </main>
-
       </body>
     </html>
   );
